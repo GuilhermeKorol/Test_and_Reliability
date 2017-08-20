@@ -5,6 +5,13 @@
 Sensor::Sensor(int t) {
 	type = t;
 	alert = OFF;
+	if (t == TEMP) {
+		value = VALID_TEMP;
+	}
+	else {
+		value = VALID_PRESSURE;
+	}
+	printf("Sensor initialized with valid value\n");
 }
 
 Sensor::~Sensor()
@@ -42,6 +49,7 @@ bool Sensor::getH() {
 
 void Sensor::setR(float	r) {
 	conf = r;
+	printf("Confiability set to %f\n", r);
 }
 
 float Sensor::getR() {
@@ -50,9 +58,11 @@ float Sensor::getR() {
 
 bool Sensor::setValue(float v) {
 	if (type == TEMP) {
+		printf("Value set to %f\n", v);
 		if (v >= LIMIT_TEMP) {
 			if (alert == OFF) {
 				alert = ON;
+				printf("Temperature alarm ON\n");
 			}
 			value = v;
 			return true;
@@ -60,6 +70,7 @@ bool Sensor::setValue(float v) {
 		else if (v < LIMIT_TEMP) {
 			if (alert == ON) {
 				alert = OFF;
+				printf("Temperature alarm OFF\n");
 			}
 			value = v;
 			return true;
@@ -68,9 +79,11 @@ bool Sensor::setValue(float v) {
 		return false;
 	}
 	else {	//type == pressure
+		printf("Value setted to %f\n", v);
 		if (v >= LIMIT_PRESSURE) {
 			if (alert == OFF) {
 				alert = ON;
+				printf("Pressure alarm ON\n");
 			}
 			value = v;
 			return true;
@@ -78,6 +91,7 @@ bool Sensor::setValue(float v) {
 		else if (v < LIMIT_PRESSURE) {
 			if (alert == ON) {
 				alert = OFF;
+				printf("Pressure alarm OFF\n");
 			}
 			value = v;
 			return true;

@@ -10,3 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <new>
+#include <time.h>
+#include <windows.h>
+#include "controller.h"
+#include "defines.h"

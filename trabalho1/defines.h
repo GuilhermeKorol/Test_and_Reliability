@@ -24,4 +24,10 @@
 #define ON	true
 #define OFF false
 
+//  Range for randomic values of temperature and pressure
+#define MAX_TEMP 80
+#define MIN_TEMP 1
+#define MAX_PRESSURE 2026
+#define MIN_PRESSURE 1
+
 
