@@ -12,5 +12,6 @@
 #include <new>
 #include <time.h>
 #include <windows.h>
+#include <random>
 #include "controller.h"
 #include "defines.h"

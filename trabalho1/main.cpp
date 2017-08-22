@@ -3,32 +3,37 @@
 
 #include "stdafx.h"
 
-float rand_value(int max, int min) {
-	return (float)rand() / (RAND_MAX + 1) * (max - min)
-		+ min;
-}
-
 int main()
 {
+	std::default_random_engine generator;
+	std::uniform_real_distribution<double> distribution(0, 1);
+	double random_number;
+
 	Sensor* temp_sensor = new (nothrow) Sensor(TEMP);
 	Sensor* pressure_sensor = new (nothrow) Sensor(PRESSURE);
 	Controller* cont = new (nothrow) Controller();
 
-	srand((unsigned)time(NULL));
+	//srand((unsigned)time(NULL));
 
 	if (cont == NULL || temp_sensor == NULL || pressure_sensor == NULL) {
 		printf("Error(s) instantiating sensors or controller\n");
 		return 1;
 	}
 
-	cont->enable();
+	if (!(cont->enable())) {
+		printf("Sensors are already enabled\n");
+	}
+
+	temp_sensor->setR(0.7);
+	pressure_sensor->setR(0.8);
 
 	while (true) {
 		cont->alert(temp_sensor);
 		cont->alert(pressure_sensor);
 
-		temp_sensor->setValue( rand_value(MAX_TEMP, MIN_TEMP) );
-		pressure_sensor->setValue( rand_value(MAX_PRESSURE, MIN_PRESSURE) );
+		random_number = distribution(generator);
+		temp_sensor->setValue(random_number*(MAX_TEMP - MIN_TEMP) + MIN_TEMP);
+		pressure_sensor->setValue(random_number*(MAX_PRESSURE - MIN_PRESSURE) + MIN_PRESSURE);
 
 		Sleep(3000);
 	}

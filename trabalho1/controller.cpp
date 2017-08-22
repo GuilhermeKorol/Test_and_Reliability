@@ -10,14 +10,22 @@ Controller::~Controller() {
 
 }
 
-void Controller::enable() {
-	printf("Controller ENABLED\n");
-	status = ENABLED;
+bool Controller::enable() {
+	if(status == DISABLED) {
+		printf("Controller ENABLED\n");
+		status = ENABLED;
+		return true;
+	}
+else return false;
 }
 
-void Controller::disable() {
-	printf("Controller DISABLED\n");
-	status = DISABLED;
+bool Controller::disable() {
+	if (status == ENABLED) {
+		printf("Controller DISABLED\n");
+		status = DISABLED;
+		return true;
+	}
+	else return false;
 }
 
 void Controller::alert(Sensor* s) {
@@ -65,6 +73,21 @@ void Controller::open(Sensor* s) {
 	else if (s->getType() == PRESSURE) {
 		valve_pressure = OPENED;
 		printf("Pressure valve OPENED\n");
+	}
+}
+
+bool Controller::getV(Sensor* s) {
+	if (s->getType() == TEMP) {
+		if (valve_temp == OPENED) {
+			return true;
+		}
+		else return false;
+	}
+	else if (s->getType() == PRESSURE) {
+		if (valve_pressure == OPENED) {
+			return true;
+		}
+		else return false;
 	}
 }
 

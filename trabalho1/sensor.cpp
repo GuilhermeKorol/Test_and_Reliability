@@ -2,9 +2,10 @@
 #include "sensor.h"
 
 
-Sensor::Sensor(int t) {
+Sensor::Sensor(int t) : distribution(0, 1) {
 	type = t;
 	alert = OFF;
+	conf = 0.5;
 	if (t == TEMP) {
 		value = VALID_TEMP;
 	}
@@ -57,47 +58,52 @@ float Sensor::getR() {
 }
 
 bool Sensor::setValue(float v) {
-	if (type == TEMP) {
-		printf("Value set to %f\n", v);
-		if (v >= LIMIT_TEMP) {
-			if (alert == OFF) {
-				alert = ON;
-				printf("Temperature alarm ON\n");
+	double random_number = distribution(generator);
+	
+	if (random_number < conf) {	// Confiability -> as conf grows, higher are the chances of success
+		if (type == TEMP) {
+			printf("Value set to %f\n", v);
+			if (v >= LIMIT_TEMP) {
+				if (alert == OFF) {
+					alert = ON;
+					printf("Temperature alarm ON\n");
+				}
+				value = v;
+				return true;
 			}
-			value = v;
-			return true;
-		}
-		else if (v < LIMIT_TEMP) {
-			if (alert == ON) {
-				alert = OFF;
-				printf("Temperature alarm OFF\n");
+			else if (v < LIMIT_TEMP) {
+				if (alert == ON) {
+					alert = OFF;
+					printf("Temperature alarm OFF\n");
+				}
+				value = v;
+				return true;
 			}
-			value = v;
-			return true;
+			return false;
 		}
-		// TODO: use confiability value R
-		return false;
+		else {	//type == pressure
+			printf("Value set to %f\n", v);
+			if (v >= LIMIT_PRESSURE) {
+				if (alert == OFF) {
+					alert = ON;
+					printf("Pressure alarm ON\n");
+				}
+				value = v;
+				return true;
+			}
+			else if (v < LIMIT_PRESSURE) {
+				if (alert == ON) {
+					alert = OFF;
+					printf("Pressure alarm OFF\n");
+				}
+				value = v;
+				return true;
+			}
+			return false;
+		}
 	}
-	else {	//type == pressure
-		printf("Value setted to %f\n", v);
-		if (v >= LIMIT_PRESSURE) {
-			if (alert == OFF) {
-				alert = ON;
-				printf("Pressure alarm ON\n");
-			}
-			value = v;
-			return true;
-		}
-		else if (v < LIMIT_PRESSURE) {
-			if (alert == ON) {
-				alert = OFF;
-				printf("Pressure alarm OFF\n");
-			}
-			value = v;
-			return true;
-		}
-		// TODO: use confiability value R
-		return false;
+	else {
+		printf("Sensor failed :(\n");
 	}
 }
 

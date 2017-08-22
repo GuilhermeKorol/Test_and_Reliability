@@ -11,10 +11,12 @@ public:
 	Controller();
 	~Controller();
 
-	void enable();
-	void disable();
+	bool enable();
+	bool disable();
 	void alert(Sensor* s);
 	void reset(Sensor* s);
+	bool getV(Sensor* s);
+
 
 private:
 	bool status;
