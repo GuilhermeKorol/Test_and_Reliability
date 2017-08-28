@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "defines.h"
-#include "Sensor.h"
+#include "sensor.h"
 
 using namespace std;
 
@@ -16,7 +16,6 @@ public:
 	void alert(Sensor* s);
 	void reset(Sensor* s);
 	bool getV(Sensor* s);
-
 
 private:
 	bool status;

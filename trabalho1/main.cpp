@@ -2,9 +2,18 @@
 //
 
 #include "stdafx.h"
+#include "gtest/gtest.h"
 
-int main()
+TEST(teste1, teste) {
+	Sensor * s = new Sensor(TEMP);
+	ASSERT_EQ(0.5, s->getR());
+}
+
+int main(int argc, char** argv)
 {
+	::testing::InitGoogleTest(&argc, argv);
+	printf("tests: %d", RUN_ALL_TESTS());
+
 	std::default_random_engine generator;
 	std::uniform_real_distribution<double> distribution(0, 1);
 	double random_number;
