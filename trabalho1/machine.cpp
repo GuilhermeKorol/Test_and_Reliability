@@ -70,6 +70,10 @@ void Machine_ctrl::update_state() {
 	ps = ns;
 }
 
+states_ctrl Machine_ctrl::getState() {
+	return ps;
+}
+
 Machine_ctrl::~Machine_ctrl() {
 	delete ctrl;
 }
