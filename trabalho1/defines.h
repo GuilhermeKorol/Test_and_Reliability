@@ -4,6 +4,10 @@
 #define	TEMP		1
 #define	PRESSURE	2
 
+// Type of valves
+#define VALVE_TEMP 1
+#define	VALVE_PRESSURE 2
+
 //  Status of valves
 #define	OPENED	true
 #define CLOSED	false

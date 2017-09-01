@@ -20,34 +20,28 @@ int main(int argc, char** argv)
 
 	Sensor* temp_sensor = new (nothrow) Sensor(TEMP);
 	Sensor* pressure_sensor = new (nothrow) Sensor(PRESSURE);
-	Controller* cont = new (nothrow) Controller();
+	//Controller* cont = new (nothrow) Controller();
+	Machine_ctrl* fsm_ctrl = new (nothrow) Machine_ctrl(temp_sensor, pressure_sensor);
 
-	//srand((unsigned)time(NULL));
-
-	if (cont == NULL || temp_sensor == NULL || pressure_sensor == NULL) {
+	if (fsm_ctrl == NULL || temp_sensor == NULL || pressure_sensor == NULL) {
 		printf("Error(s) instantiating sensors or controller\n");
 		return 1;
-	}
-
-	if (!(cont->enable())) {
-		printf("Sensors are already enabled\n");
 	}
 
 	temp_sensor->setR(0.7);
 	pressure_sensor->setR(0.8);
 
 	while (true) {
-		cont->alert(temp_sensor);
-		cont->alert(pressure_sensor);
-
 		random_number = distribution(generator);
 		temp_sensor->setValue(random_number*(MAX_TEMP - MIN_TEMP) + MIN_TEMP);
 		pressure_sensor->setValue(random_number*(MAX_PRESSURE - MIN_PRESSURE) + MIN_PRESSURE);
 
+		fsm_ctrl->update_state();
+
 		Sleep(3000);
 	}
 
-	delete cont;
+	delete fsm_ctrl;
 	delete temp_sensor;
 	delete pressure_sensor;
 

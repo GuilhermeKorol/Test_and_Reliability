@@ -15,4 +15,5 @@
 #include <random>
 #include "controller.h"
 #include "sensor.h"
+#include "machine_ctrl.h"
 #include "defines.h"

@@ -71,7 +71,7 @@ bool Sensor::setValue(float v) {
 				value = v;
 				return true;
 			}
-			else if (v < LIMIT_TEMP) {
+			else {
 				if (alert == ON) {
 					alert = OFF;
 					printf("Temperature alarm OFF\n");
@@ -79,7 +79,6 @@ bool Sensor::setValue(float v) {
 				value = v;
 				return true;
 			}
-			return false;
 		}
 		else {	//type == pressure
 			printf("Value set to %f\n", v);
@@ -91,7 +90,7 @@ bool Sensor::setValue(float v) {
 				value = v;
 				return true;
 			}
-			else if (v < LIMIT_PRESSURE) {
+			else {
 				if (alert == ON) {
 					alert = OFF;
 					printf("Pressure alarm OFF\n");
@@ -99,11 +98,11 @@ bool Sensor::setValue(float v) {
 				value = v;
 				return true;
 			}
-			return false;
 		}
 	}
 	else {
 		printf("Sensor failed :(\n");
+		return false;
 	}
 }
 

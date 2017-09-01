@@ -2,8 +2,9 @@
 #include "controller.h"
 
 
-Controller::Controller() {
+Controller::Controller(Sensor * temp, Sensor * pres) : sensor_temp(temp), sensor_pressure(pres) {
 	init();
+	enable();
 }
 
 Controller::~Controller() {
@@ -28,30 +29,40 @@ bool Controller::disable() {
 	else return false;
 }
 
-void Controller::alert(Sensor* s) {
-	if( s->getAlert() == ON) {
-		if (s->getType() == TEMP) {
+bool Controller::alert(int type) {
+	if (type == TEMP) {
+		if (sensor_pressure->getAlert() == ON) {
 			valve_temp = OPENED;
 			printf("Temperature valve OPENED\n");
+			return true;
 		}
-		else {
+	}
+	else {
+		if (sensor_pressure->getAlert() == ON) {
 			valve_pressure = OPENED;
 			printf("Pressure valve OPENED\n");
+			return true;
 		}
 	}
+	return false;
 }
 
-void Controller::reset(Sensor* s) {
-	if (s->getAlert() == OFF) {
-		if (s->getType() == TEMP) {
+bool Controller::reset(int type) {
+	if (type == TEMP) {
+		if (sensor_temp->getAlert() == OFF) {
 			valve_temp = CLOSED;
 			printf("Temperature valve CLOSED\n");
-		}
-		else {
-			valve_pressure = CLOSED;
-			printf("Pressure valve CLOSED\n");
+			return true;
 		}
 	}
+	else {
+		if (sensor_pressure->getAlert() == OFF) {
+			valve_pressure = CLOSED;
+			printf("Pressure valve CLOSED\n");
+			return true;
+		}
+	}
+	return false;
 }
 
 void Controller::close(Sensor* s) {
@@ -76,18 +87,12 @@ void Controller::open(Sensor* s) {
 	}
 }
 
-bool Controller::getV(Sensor* s) {
-	if (s->getType() == TEMP) {
-		if (valve_temp == OPENED) {
-			return true;
-		}
-		else return false;
+bool Controller::getV(int type) {
+	if (type == VALVE_TEMP) {
+		return valve_temp;
 	}
-	else if (s->getType() == PRESSURE) {
-		if (valve_pressure == OPENED) {
-			return true;
-		}
-		else return false;
+	else {
+		return valve_pressure;
 	}
 }
 
