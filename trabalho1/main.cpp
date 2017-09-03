@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "gtest/gtest.h"
 
-#define RUN_TESTS false
+#define RUN_TESTS true // TRUE - run all test cases | FALSE - run the program normally
 
 // Walks trhough the controller FSM q0 - q3 - q4 - q6 - q4 - q3 - q0
 TEST_F(test_fixture_ctrl, unit_test_ctrl_q6_up_and_back) {
@@ -72,10 +72,11 @@ TEST_F(test_fixture_sensor, unit_test_sensor_s3_and_back) {
 
 int main(int argc, char** argv)
 {
-	::testing::InitGoogleTest(&argc, argv);
-	printf("tests: %d", RUN_ALL_TESTS());
-
 	if (RUN_TESTS) {
+		::testing::InitGoogleTest(&argc, argv);
+		printf("tests: %d", RUN_ALL_TESTS());
+	}
+	else {
 
 		std::default_random_engine generator;
 		std::uniform_real_distribution<double> distribution(0, 1);
