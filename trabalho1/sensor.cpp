@@ -5,7 +5,9 @@
 Sensor::Sensor(int t) : distribution(0, 1) {
 	type = t;
 	alert = OFF;
+	status = DISABLED;
 	conf = 0.5;
+	ps = s0;
 	if (t == TEMP) {
 		value = VALID_TEMP;
 	}
@@ -20,22 +22,28 @@ Sensor::~Sensor()
 }
 
 bool Sensor::setH() {
-	if (status == ENABLED) {
-		return false;
-	}
-	else {
-		status = ENABLED;
-		return true;
+	if (ps == s0) {
+		if (status == ENABLED) {
+			return false;
+		}
+		else {
+			status = ENABLED;
+			ps = s1;
+			return true;
+		}
 	}
 }
 
 bool Sensor::resetH() {
-	if (status == DISABLED) {
-		return false;
-	}
-	else {
-		status = DISABLED;
-		return true;
+	if (ps == s1) {
+		if (status == DISABLED) {
+			return false;
+		}
+		else {
+			status = DISABLED;
+			ps = s0;
+			return true;
+		}
 	}
 }
 
@@ -66,6 +74,9 @@ bool Sensor::setValue(float v) {
 			if (v >= LIMIT_TEMP) {
 				if (alert == OFF) {
 					alert = ON;
+					if (ps == s1) {
+						ps = s2;
+					}
 					printf("Temperature alarm ON\n");
 				}
 				value = v;
@@ -75,6 +86,9 @@ bool Sensor::setValue(float v) {
 				if (alert == ON) {
 					alert = OFF;
 					printf("Temperature alarm OFF\n");
+				}
+				if (ps == s2) {
+					ps = s1;
 				}
 				value = v;
 				return true;

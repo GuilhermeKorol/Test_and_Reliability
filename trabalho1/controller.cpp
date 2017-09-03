@@ -4,7 +4,6 @@
 
 Controller::Controller(Sensor * temp, Sensor * pres) : sensor_temp(temp), sensor_pressure(pres) {
 	init();
-	enable();
 }
 
 Controller::~Controller() {
@@ -12,35 +11,53 @@ Controller::~Controller() {
 }
 
 bool Controller::enable() {
-	if(status == DISABLED) {
-		printf("Controller ENABLED\n");
-		status = ENABLED;
-		return true;
+	if (ps == q0) {
+		if (status == DISABLED) {
+			printf("Controller ENABLED\n");
+			status = ENABLED;
+			ps = q3;
+			return true;
+		}
 	}
-else return false;
+	return false;
 }
 
 bool Controller::disable() {
-	if (status == ENABLED) {
-		printf("Controller DISABLED\n");
-		status = DISABLED;
-		return true;
+	if (ps == q3) {
+		if (status == ENABLED) {
+			printf("Controller DISABLED\n");
+			status = DISABLED;
+			ps = q0;
+			return true;
+		}
 	}
-	else return false;
+	return false;
 }
 
 bool Controller::alert(int type) {
 	if (type == TEMP) {
-		if (sensor_pressure->getAlert() == ON) {
+		if (sensor_temp->getAlert() == ON && (ps == q3 || ps == q5) ) {
 			valve_temp = OPENED;
 			printf("Temperature valve OPENED\n");
+			if (ps == q3) {
+				ps = q4;
+			}
+			else {
+				ps = q6;
+			}
 			return true;
 		}
 	}
 	else {
-		if (sensor_pressure->getAlert() == ON) {
+		if (sensor_pressure->getAlert() == ON && (ps == q3 || ps == q4) ) {
 			valve_pressure = OPENED;
 			printf("Pressure valve OPENED\n");
+			if (ps == q3) {
+				ps = q5;
+			}
+			else {
+				ps = q6;
+			}
 			return true;
 		}
 	}
@@ -49,53 +66,68 @@ bool Controller::alert(int type) {
 
 bool Controller::reset(int type) {
 	if (type == TEMP) {
-		if (sensor_temp->getAlert() == OFF) {
-			valve_temp = CLOSED;
-			printf("Temperature valve CLOSED\n");
+		if (sensor_temp->getAlert() == OFF && (ps == q4 || ps == q6) ) {
+			close(type);
+			if (ps == q4) {
+				ps = q3;
+			}
+			else {
+				ps = q5;
+			}
 			return true;
 		}
 	}
 	else {
-		if (sensor_pressure->getAlert() == OFF) {
-			valve_pressure = CLOSED;
-			printf("Pressure valve CLOSED\n");
+		if (sensor_pressure->getAlert() == OFF && (ps == q5 || ps == q6) ) {
+			close(type);
+			if (ps == q5) {
+				ps = q3;
+			}
+			else {
+				ps = q4;
+			}
 			return true;
 		}
 	}
 	return false;
 }
 
-void Controller::close(Sensor* s) {
-	if (s->getType() == TEMP) {
+void Controller::close(int type) {
+	if (type == TEMP) {
 		valve_temp = CLOSED;
 		printf("Temperature valve CLOSED\n");
 	}
-	else if (s->getType() == PRESSURE) {
+	else {
 		valve_pressure = CLOSED;
 		printf("Pressure valve CLOSED\n");
 	}
 }
 
-void Controller::open(Sensor* s) {
-	if (s->getType() == TEMP) {
+void Controller::open(int type) {
+	if (type == TEMP) {
 		valve_temp = OPENED;
 		printf("Temperature valve OPENED\n");
 	}
-	else if (s->getType() == PRESSURE) {
+	else {
 		valve_pressure = OPENED;
 		printf("Pressure valve OPENED\n");
 	}
 }
 
 bool Controller::getV(int type) {
-	if (type == VALVE_TEMP) {
-		return valve_temp;
-	}
-	else {
-		return valve_pressure;
+	if (ps == q0 || ps == q6) {
+		if (type == TEMP) {
+			return valve_temp;
+		}
+		else {
+			return valve_pressure;
+		}
 	}
 }
 
 void Controller::init() {
 	status = DISABLED;
+	open(TEMP);
+	open(PRESSURE);
+	ps = q0;
 }

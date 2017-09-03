@@ -3,6 +3,9 @@
 // States of the Controller FSM
 enum states_ctrl { q0, q3, q4, q5, q6 };
 
+// States of the Sensor FSM
+enum states_sensor { s0, s1, s2 };
+
 //	Types of sensors
 #define	TEMP		1
 #define	PRESSURE	2

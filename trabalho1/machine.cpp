@@ -74,6 +74,11 @@ states_ctrl Machine_ctrl::getState() {
 	return ps;
 }
 
+Controller* Machine_ctrl::get_ctrl() {
+	return ctrl;
+}
+
+
 Machine_ctrl::~Machine_ctrl() {
 	delete ctrl;
 }

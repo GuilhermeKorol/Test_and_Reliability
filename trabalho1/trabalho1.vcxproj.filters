@@ -37,6 +37,9 @@
     <ClInclude Include="machine_ctrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="test_fixtures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -49,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="machine.cpp">

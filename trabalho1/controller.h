@@ -18,6 +18,8 @@ public:
 	bool getV(int type);
 
 private:
+	states_ctrl ps;
+
 	bool status;
 	bool valve_temp;
 	bool valve_pressure;
@@ -25,8 +27,8 @@ private:
 	Sensor * sensor_temp;
 	Sensor * sensor_pressure;
 
-	void close(Sensor* s);
-	void open(Sensor* s);
+	void close(int type);
+	void open(int type);
 	void init();
 
 };

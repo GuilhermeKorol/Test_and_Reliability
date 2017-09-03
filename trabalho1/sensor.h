@@ -21,6 +21,7 @@ public:
 	int		getType();
 
 private:
+	states_sensor ps;
 	float	value;
 	int		type;
 	bool	status;
