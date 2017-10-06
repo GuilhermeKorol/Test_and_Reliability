@@ -15,6 +15,7 @@
 #include <random>
 #include "controller.h"
 #include "sensor.h"
+#include "sensor_nversoes.h"
 #include "defines.h"
 #include "test_fixtures.h"
 // #include "machine_ctrl.h"

@@ -10,44 +10,44 @@
 #define RUN_TESTS true // TRUE - run all test cases | FALSE - run the program normally
 
 // Walks trhough the controller FSM q0 - q3 - q4 - q6 - q4 - q3 - q0
-TEST_F(test_fixture_ctrl, unit_test_ctrl_q6_up_and_back) {
-	// Q0 -> Q3
-	ASSERT_TRUE(ctrl_ut->enable());
-	// Q3 -> Q4
-	temp_sensor->setValue(LIMIT_TEMP + 1); // Should set temperature alarm ON
-	EXPECT_TRUE(ctrl_ut->alert(TEMP));
-	// Q4 -> Q4
-	EXPECT_TRUE(ctrl_ut->getV(TEMP));
-	// Q4 -> Q6
-	pressure_sensor->setValue(LIMIT_PRESSURE + 1); // Should set pressure alarm ON
-	EXPECT_TRUE(ctrl_ut->alert(PRESSURE));
-	// Q6 -> Q6
-	EXPECT_TRUE(ctrl_ut->getV(TEMP));
-	EXPECT_TRUE(ctrl_ut->getV(PRESSURE));
-	// Q6 -> Q4
-	pressure_sensor->setValue(LIMIT_PRESSURE - 1); // Should set pressure alarm OFF
-	EXPECT_TRUE(ctrl_ut->reset(PRESSURE));
-	// Q4 -> Q3
-	temp_sensor->setValue(LIMIT_TEMP - 1); // Should set temperature alarm OFF
-	EXPECT_TRUE(ctrl_ut->reset(TEMP));
-	// Q3 -> Q0
-	EXPECT_TRUE(ctrl_ut->disable());
-	// Q0 -> Q0
-	EXPECT_FALSE(ctrl_ut->getV(TEMP));
-	EXPECT_FALSE(ctrl_ut->getV(PRESSURE));
-}
+//TEST_F(test_fixture_ctrl, unit_test_ctrl_q6_up_and_back) {
+//	// Q0 -> Q3
+//	ASSERT_TRUE(ctrl_ut->enable());
+//	// Q3 -> Q4
+//	temp_sensor->setValue(LIMIT_TEMP + 1); // Should set temperature alarm ON
+//	EXPECT_TRUE(ctrl_ut->alert(TEMP));
+//	// Q4 -> Q4
+//	EXPECT_TRUE(ctrl_ut->getV(TEMP));
+//	// Q4 -> Q6
+//	pressure_sensor->setValue(LIMIT_PRESSURE + 1); // Should set pressure alarm ON
+//	EXPECT_TRUE(ctrl_ut->alert(PRESSURE));
+//	// Q6 -> Q6
+//	EXPECT_TRUE(ctrl_ut->getV(TEMP));
+//	EXPECT_TRUE(ctrl_ut->getV(PRESSURE));
+//	// Q6 -> Q4
+//	pressure_sensor->setValue(LIMIT_PRESSURE - 1); // Should set pressure alarm OFF
+//	EXPECT_TRUE(ctrl_ut->reset(PRESSURE));
+//	// Q4 -> Q3
+//	temp_sensor->setValue(LIMIT_TEMP - 1); // Should set temperature alarm OFF
+//	EXPECT_TRUE(ctrl_ut->reset(TEMP));
+//	// Q3 -> Q0
+//	EXPECT_TRUE(ctrl_ut->disable());
+//	// Q0 -> Q0
+//	EXPECT_FALSE(ctrl_ut->getV(TEMP));
+//	EXPECT_FALSE(ctrl_ut->getV(PRESSURE));
+//}
 
 // Walks trhough the controller FSM q0 - q3 - q5 - q6
-TEST_F(test_fixture_ctrl, unit_test_ctrl_q6_down) {
-	// Q0 -> Q3
-	ASSERT_TRUE(ctrl_ut->enable());
-	// Q3 -> Q5
-	pressure_sensor->setValue(LIMIT_PRESSURE + 1);
-	EXPECT_TRUE(ctrl_ut->alert(PRESSURE));
-	// Q5 -> Q6
-	temp_sensor->setValue(LIMIT_TEMP + 1); // Should set temperature alarm ON
-	EXPECT_TRUE(ctrl_ut->alert(TEMP));
-}
+//TEST_F(test_fixture_ctrl, unit_test_ctrl_q6_down) {
+//	// Q0 -> Q3
+//	ASSERT_TRUE(ctrl_ut->enable());
+//	// Q3 -> Q5
+//	pressure_sensor->setValue(LIMIT_PRESSURE + 1);
+//	EXPECT_TRUE(ctrl_ut->alert(PRESSURE));
+//	// Q5 -> Q6
+//	temp_sensor->setValue(LIMIT_TEMP + 1); // Should set temperature alarm ON
+//	EXPECT_TRUE(ctrl_ut->alert(TEMP));
+//}
 
 // Walks trhough the sensor FSM s0 - s1 - s2 - s1 - s0
 TEST_F(test_fixture_sensor, unit_test_sensor_s3_and_back) {
@@ -69,6 +69,36 @@ TEST_F(test_fixture_sensor, unit_test_sensor_s3_and_back) {
 	EXPECT_FALSE(sensor_ut->getAlert());
 
 }
+
+// Walks through a simple sensor sensor (R=0.85) and a n-version sensor (R1 = 0.5, R2 = 0.75, R = 1)  
+// FSM s0 - s1 - s2 - s1 - s0
+TEST_F(test_fixture_sensor_nver, unit_test_sensor_nver_s3_and_back) {
+	// S0 -> S1
+	//EXPECT_TRUE(sensor_ut_s->setH());
+	EXPECT_TRUE(sensor_ut_nver->setH());
+	// S1 -> S1
+	//EXPECT_FALSE(sensor_ut_s->getAlert());
+	EXPECT_FALSE(sensor_ut_nver->getAlert());
+	// S1 -> S2
+	//EXPECT_TRUE(sensor_ut_s->setValue(LIMIT_PRESSURE + 1)); // Test is using sensor as TEMP type
+	EXPECT_TRUE(sensor_ut_nver->setValue(LIMIT_TEMP + 1)); // S2 -> S2
+	//EXPECT_TRUE(sensor_ut_s->getAlert());
+	EXPECT_TRUE(sensor_ut_nver->getAlert());
+	// S2 -> S1
+	//EXPECT_TRUE(sensor_ut_s->setValue(LIMIT_PRESSURE - 1));
+	EXPECT_TRUE(sensor_ut_nver->setValue(LIMIT_TEMP - 1));
+	// S1 -> S1
+	//EXPECT_FALSE(sensor_ut_s->getAlert());
+	EXPECT_FALSE(sensor_ut_nver->getAlert());
+	// S1 -> S0
+	//EXPECT_TRUE(sensor_ut_s->resetH());
+	EXPECT_TRUE(sensor_ut_nver->resetH());
+	// S0 -> S0
+	//EXPECT_FALSE(sensor_ut_s->getAlert());
+	EXPECT_FALSE(sensor_ut_nver->getAlert());
+
+}
+
 
 int main(int argc, char** argv)
 {

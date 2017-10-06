@@ -13,8 +13,8 @@ public:
 	}
 
 	void SetUp() {
-		temp_sensor->setR(1.0);
-		pressure_sensor->setR(1.0);
+		temp_sensor->setR(0.85);
+		pressure_sensor->setR(0.85);
 	}
 
 	void TearDown() {
@@ -39,7 +39,7 @@ public:
 	}
 
 	void SetUp() {
-		sensor_ut->setR(1.0);
+		sensor_ut->setR(0.85);
 	}
 
 	void TearDown() {
@@ -50,4 +50,39 @@ public:
 	}
 
 	Sensor* sensor_ut; // Sensor Under Test
+};
+
+class test_fixture_sensor_nver : public ::testing::Test {
+public:
+	test_fixture_sensor_nver() {
+		s1 = new (nothrow) Sensor(TEMP);
+		s2 = new (nothrow) Sensor(TEMP);
+		s3 = new (nothrow) Sensor(TEMP);
+
+		//sensor_ut_s = new (nothrow) Sensor(PRESSURE);
+		sensor_ut_nver = new (nothrow) Sensor_nver(s1,s2,s3);
+	}
+
+	void SetUp() {
+		//sensor_ut_s->setR(0.85);
+
+		s1->setR(0.5);
+		s2->setR(0.75);
+		s3->setR(1);
+	}
+
+	void TearDown() {
+		//delete sensor_ut_s;
+		delete sensor_ut_nver;
+	}
+
+	~test_fixture_sensor_nver() {
+	}
+
+	Sensor_nver* sensor_ut_nver; // Sensor Under Test N-version
+	//Sensor* sensor_ut_s;			 // Simple sensor under test
+
+	Sensor* s1;
+	Sensor* s2;
+	Sensor* s3;
 };

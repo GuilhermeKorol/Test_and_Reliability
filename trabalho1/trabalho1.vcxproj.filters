@@ -40,6 +40,9 @@
     <ClInclude Include="test_fixtures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sensor_nversoes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -55,6 +58,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="machine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sensor_nversoes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
