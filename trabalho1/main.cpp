@@ -74,27 +74,19 @@ TEST_F(test_fixture_sensor, unit_test_sensor_s3_and_back) {
 // FSM s0 - s1 - s2 - s1 - s0
 TEST_F(test_fixture_sensor_nver, unit_test_sensor_nver_s3_and_back) {
 	// S0 -> S1
-	//EXPECT_TRUE(sensor_ut_s->setH());
 	EXPECT_TRUE(sensor_ut_nver->setH());
 	// S1 -> S1
-	//EXPECT_FALSE(sensor_ut_s->getAlert());
 	EXPECT_FALSE(sensor_ut_nver->getAlert());
 	// S1 -> S2
-	//EXPECT_TRUE(sensor_ut_s->setValue(LIMIT_PRESSURE + 1)); // Test is using sensor as TEMP type
 	EXPECT_TRUE(sensor_ut_nver->setValue(LIMIT_TEMP + 1)); // S2 -> S2
-	//EXPECT_TRUE(sensor_ut_s->getAlert());
 	EXPECT_TRUE(sensor_ut_nver->getAlert());
 	// S2 -> S1
-	//EXPECT_TRUE(sensor_ut_s->setValue(LIMIT_PRESSURE - 1));
 	EXPECT_TRUE(sensor_ut_nver->setValue(LIMIT_TEMP - 1));
 	// S1 -> S1
-	//EXPECT_FALSE(sensor_ut_s->getAlert());
 	EXPECT_FALSE(sensor_ut_nver->getAlert());
 	// S1 -> S0
-	//EXPECT_TRUE(sensor_ut_s->resetH());
 	EXPECT_TRUE(sensor_ut_nver->resetH());
 	// S0 -> S0
-	//EXPECT_FALSE(sensor_ut_s->getAlert());
 	EXPECT_FALSE(sensor_ut_nver->getAlert());
 
 }

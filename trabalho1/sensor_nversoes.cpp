@@ -56,11 +56,6 @@ bool Sensor_nver::getH() {
 	}
 }
 
-//void Sensor_nver::setR(float r) {
-//}
-//float Sensor_nver::getR() {
-//}
-
 bool Sensor_nver::setValue(float v) {
 	bool ret1 = s1->setValue(v);
 	bool ret2 = s2->setValue(v);

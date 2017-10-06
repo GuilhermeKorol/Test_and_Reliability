@@ -39,7 +39,7 @@ public:
 	}
 
 	void SetUp() {
-		sensor_ut->setR(0.85);
+		sensor_ut->setR(0.70);
 	}
 
 	void TearDown() {
@@ -67,7 +67,7 @@ public:
 		//sensor_ut_s->setR(0.85);
 
 		s1->setR(0.5);
-		s2->setR(0.75);
+		s2->setR(1);
 		s3->setR(1);
 	}
 
